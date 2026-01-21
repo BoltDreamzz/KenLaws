@@ -51,22 +51,30 @@ def next_kin(request):
     
 
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
-        if form.is_valid():
-            # Collect the data
-            data = form.cleaned_data
-            subject = f"New Application: {data['application_for']}"
-            message = f"""
-            Email: {data['email']}
-            Duration: {data['select_duration_plan']} ({dict(form.fields['select_duration_plan'].choices)[data['select_duration_plan']]})
-            """
-            recipient_list = [settings.ADMIN_EMAIL]
+        try:
+
+            form = ApplicationForm(request.POST)
+            if form.is_valid():
+                # Collect the data
+                data = form.cleaned_data
+                subject = f"New Application: {data['application_for']}"
+                message = f"""
+                Email: {data['email']}
+                Duration: {data['select_duration_plan']} ({dict(form.fields['select_duration_plan'].choices)[data['select_duration_plan']]})
+                """
+                recipient_list = [settings.ADMIN_EMAIL]
+                
+                # Send the email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+
+                messages.success(request, 'Application submitted successfully!')
+                print(f'Sent email for: {data['email']}!')
+
+                
+                return render(request, 'classified/success.html', {'message': 'Application submitted successfully!'})
             
-            # Send the email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
-            messages.success(request, 'Application submitted successfully!')
-            
-            return render(request, 'classified/success.html', {'message': 'Application submitted successfully!'})
+        except Exception as e:
+            messages.error(request, f"An error occurred, {e}")
 
     else:
         form = ApplicationForm()

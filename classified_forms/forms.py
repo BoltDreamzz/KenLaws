@@ -39,8 +39,8 @@ from django import forms
 
 class ApplicationForm(forms.Form):
     DURATION_CHOICES = [
-        ('3-5 weeks', '3-5 weeks $300.00'),
-        ('3-5 days', '3-5 days $500.00'),
+        ('3-5 weeks', '3-5 weeks $529.99'),
+        ('3-5 days', '3-5 days $1,549.99'),
         
     ]
 

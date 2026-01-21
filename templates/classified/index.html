@@ -37,7 +37,7 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
         <div class="flex flex-col items-center justify-center">
-            <img src="{%static 'media/ttb.png'%}" class="w-24 h-24 mt-2" alt="">
+            <img src="{%static 'media/ttb.png'%}" loading="lazy" class="w-24 h-24 mt-2" alt="">
             <flex class="flex-col">
                 <h6 class="text-sm font-bold">Brian's Attorney Law.</h6>
 
@@ -45,14 +45,19 @@
             </flex>
         </div>
         <div class="flex gap-3 justify-center items-center">
-            <img src="{%static 'media/ttf.png'%}" class="w-10 h-10 mt-2" alt="">
+            <img src="{%static 'media/ttf.png'%}" loading="lazy" class="w-10 h-10 mt-2" alt="">
             <h1 class="text-2xl font-bold text-center text-gray-800">US Marriage affairs</h1>
-            <img src="{%static 'media/ttf.png'%}" class="w-10 h-10" alt="">
+            <img src="{%static 'media/ttf.png'%}" loading="lazy" class="w-10 h-10" alt="">
 
         </div>
         <br>
         <p class="text-center text-xs mb-3">Have you found your soulmate and looking to settle down ? Well here is the
-            right place.</p>
+            right place.</p> <br>
+            <div class="flex justify-end mb-4">
+                    <a href="{%url 'classified:next_kin'%}" class="btn btn-xs btn-ghost text-blue-500">Next of kin</a>
+
+            </div>
+
 
         <div class="container">
             <div class="max-w-3xl alert alert-info mb-6 shadow-md"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -130,7 +135,10 @@
                 </div>
 
                 <!-- <div class="text-center my-3 w-100"> -->
-                <button class="btn btn-primary rounded-5 w-100 my-3" type="submit">Submit</button>
+                <button id="submitBtn" class="btn btn-primary rounded-5 w-100 my-3" type="submit">
+                    Submit
+                </button>
+
                 <!-- <a href="{%url 'classified:success'%}" class="btn btn-secondary"></a> -->
 
                 <!-- </div> -->
@@ -139,6 +147,23 @@
         </div>
 
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const button = document.getElementById("submitBtn");
+
+            if (!form || !button) return;
+
+            form.addEventListener("submit", function () {
+                button.disabled = true;
+                button.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Processing...
+      `;
+            });
+        });
+    </script>
+
 </body>
 
 </html>
