@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- Add Toastify JS -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chevron_forward" />
 
 </head>
 
@@ -47,14 +48,16 @@
         </div>
         <div class="flex gap-3 justify-center items-center">
             <img src="{%static 'media/ttf.png'%}" loading="lazy" class="w-10 h-10 mt-2" alt="">
-            <h1 class="text-2xl font-bold text-center text-gray-800">Go to Next of kin</h1>
+            <h1 class="text-2xl font-bold text-center text-gray-800 flex items-center gap-2">Next of kin </h1>
             <img src="{%static 'media/ttf.png'%}" loading="lazy" class="w-10 h-10" alt="">
 
         </div>
         <br>
         <p class="text-center text-xs mb-3">Let us help you unite with your spouse.</p><br>
         <div class="flex justify-end mb-4">
-            <a href="{%url 'classified:index'%}" class="btn btn-xs btn-ghost text-blue-500">Marriage</a>
+            <a href="{%url 'classified:index'%}" class="btn btn-xs btn-ghost text-blue-500 flex items-center gap-2">Go to Marriage <span class="material-symbols-outlined">
+chevron_forward
+</span></a>
 
         </div>
 
