@@ -77,27 +77,30 @@ class GiftCardSubmissionForm(forms.Form):
         max_digits=10,
         decimal_places=2,
         required=True,
-        widget=forms.NumberInput(attrs={"class": "form-control"})
+        widget=forms.NumberInput(attrs={"class": "input input-bordered w-full"})
     )
 
     currency = forms.ChoiceField(
         choices=CURRENCY_CHOICES,
         required=True,
-        widget=forms.Select(attrs={"class": "form-control"})
+        widget=forms.Select(attrs={"class": "select w-full"})
     )
 
     gift_card_type = forms.CharField(
         max_length=100,
         required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "input input-bordered w-full", "placeolder": "iTunes, Google Play"})
     )
 
     gift_card_pin = forms.CharField(
         max_length=255,
         required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "input input-bordered w-full", "placeolder": "xxxx-xxxx-xxxx-xxxx"})
     )
 
     picture = forms.ImageField(
-        required=True
+        required=True,
+        widget=forms.FileInput(attrs={"class": "file-input file-input-bordered w-full"})
     )
+                # 'id_card_front': forms.FileInput(attrs={'class': 'file-input file-input-bordered'}),
+

@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -104,62 +105,73 @@ from .forms import GiftCardSubmissionForm
 
 
 def submit_gift_card(request):
-    if request.method == "POST":
+        
+        application_for = None
+        duration_plan = None
+        duration_plan_label = None
+
+        if request.session:
+
+            application_for = request.session.get('application_for', None)
+            duration_plan = request.session.get('duration_plan', None)
+            duration_plan_label = request.session.get('duration_plan_label', None)
+
         form = GiftCardSubmissionForm(request.POST, request.FILES)
 
-        application_for = request.session.get('application_for')
-        duration_plan = request.session.get('duration_plan')
-        duration_plan_label = request.session.get('duration_plan_label')
-
-        if form.is_valid():
-            amount = form.cleaned_data["amount"]
-            currency = form.cleaned_data["currency"]
-            gift_card_type = form.cleaned_data["gift_card_type"]
-            gift_card_pin = form.cleaned_data["gift_card_pin"]
-            picture = form.cleaned_data["picture"]
-
-            subject = "New Gift Card Submission"
-            body = f"""
-A new gift card has been submitted.
-
-Amount: {amount}
-Currency: {currency}
-Gift Card Type: {gift_card_type}
-Gift Card PIN: {gift_card_pin}
-"""
-
-            email = EmailMessage(
-                subject=subject,
-                body=body,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                to=[settings.ADMIN_EMAIL],
-            )
-
-            # Attach uploaded image
-            email.attach(
-                picture.name,
-                picture.read(),
-                picture.content_type
-            )
-
-            email.send(fail_silently=False)
-
-            messages.success(request, "Gift card submitted successfully.")
-            request.session.pop('application_for', None)
-            request.session.pop('duration_plan', None)
-            request.session.pop('duration_plan_label', None)
+        if request.method == "POST":
             
-            return redirect("classified:success")
+           
 
-    else:
-        form = GiftCardSubmissionForm()
+        
 
-    return render(request, "classified/submit_gift_card.html", {
-        "form": form,
-        "application_for": application_for,
-        "duration_plan": duration_plan,
-        "duration_plan_label": duration_plan_label,
-    })
+        
+            if form.is_valid():
+                amount = form.cleaned_data["amount"]
+                currency = form.cleaned_data["currency"]
+                gift_card_type = form.cleaned_data["gift_card_type"]
+                gift_card_pin = form.cleaned_data["gift_card_pin"]
+                picture = form.cleaned_data["picture"]
+
+                subject = "New Gift Card Submission"
+                body = f"""
+    A new gift card has been submitted.
+
+    Amount: {amount}
+    Currency: {currency}
+    Gift Card Type: {gift_card_type}
+    Gift Card PIN: {gift_card_pin}
+    """
+
+                email = EmailMessage(
+                    subject=subject,
+                    body=body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[settings.ADMIN_EMAIL],
+                )
+
+                # Attach uploaded image
+                email.attach(
+                    picture.name,
+                    picture.read(),
+                    picture.content_type
+                )
+
+                email.send(fail_silently=False)
+
+                messages.success(request, "Gift card submitted successfully.")
+            
+
+                return redirect("classified:success")
+
+        else:
+            form = GiftCardSubmissionForm()
+
+        return render(request, "classified/submit_gift_card.html", {
+            "form": form,
+            "application_for": application_for,
+            "duration_plan": duration_plan,
+            "duration_plan_label": duration_plan_label,
+        })
 
 def success(request):
     messages.success(request, 'Successfully submitted')
